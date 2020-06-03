@@ -18,6 +18,6 @@ public class hello {
 
     @GetMapping("/")
     public String getAllEt(){
-        return "hellow";}
+        return "ya fares zzab 3lik en ligne ";}
 
 }
