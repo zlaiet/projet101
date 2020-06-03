@@ -17,8 +17,7 @@ public class hello {
     EtudiantRepository etudiantRepository;
 
     @GetMapping("/")
-    public List<Etudiant> getAllEt(){
-        return etudiantRepository.findAll();
-    }
+    public String getAllEt(){
+        return "hellow";}
 
 }
