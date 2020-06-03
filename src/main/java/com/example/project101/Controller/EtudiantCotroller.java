@@ -5,14 +5,18 @@ package com.example.project101.Controller;
 import com.example.project101.Repository.EtudiantRepository;
 
 import com.example.project101.Service.EmailService;
+import com.example.project101.Service.FileStorageService;
 import com.example.project101.exception.RessourceNotFoundException;
 
 import com.example.project101.model.Etudiant;
 import com.example.project101.model.Groupe;
+import com.example.project101.model.UploadFileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.io.Serializable;
@@ -41,16 +45,30 @@ public class EtudiantCotroller {
         Etudiant etudiant =  etudiantRepository.findById(id).orElseThrow(() -> new RessourceNotFoundException("Etudiant", "id", id));
         return  etudiant;
     }
+    @Autowired
+    private FileStorageService fileStorageService;
 
     //create new student
     @PostMapping("/createEt")
-    public Etudiant createEt(@Valid @RequestBody Etudiant etudiant){
+    public Etudiant createEt(Etudiant etudiant,@RequestParam("file") MultipartFile file){
          //System.out.println(etudiant);
 
         emailService.sendMail(etudiant.getEmail(),"inscription ",etudiant);
 
         // return etudiant ;
+
+        String fileName = fileStorageService.storeFile(file);
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+        new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
+        etudiant.setPath(fileDownloadUri);
+
         return  etudiantRepository.save(etudiant);
+
 
     }
     @PostMapping("/login")

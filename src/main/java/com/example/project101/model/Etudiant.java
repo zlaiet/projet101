@@ -20,6 +20,16 @@ public class Etudiant implements Serializable {
     String niveauEtude ;
     String password;
     String email;
+    String path;
+
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     @DBRef(lazy = true)
     @JsonIgnoreProperties
@@ -32,13 +42,14 @@ public class Etudiant implements Serializable {
     public Etudiant() {
     }
 
-    public Etudiant(String cin, String nom, String prenom, String niveauEtude, String password, String email) {
+    public Etudiant(String cin, String nom, String prenom, String niveauEtude, String password, String email,String path) {
         this.cin = cin;
         this.nom = nom;
         this.prenom = prenom;
         this.niveauEtude = niveauEtude;
         this.password = password;
         this.email = email;
+        this.path = path;
     }
 
     public String getCin() {
