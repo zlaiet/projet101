@@ -1,0 +1,15 @@
+ @PostMapping("/login")
+    @ResponseBody
+    public ResponseEntity<Enseignant> login(@RequestBody Identif identif) {
+
+        Enseignant enseignant= enseignantRepository.findByEmailAndPassword(identif.getEmail(), identif.getPassword());
+
+        if (enseignant != null) {
+
+            return new ResponseEntity<Enseignant>(enseignant, HttpStatus.OK);
+
+        }
+        else{
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
+    }
